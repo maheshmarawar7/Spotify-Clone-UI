@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alternative Google Docs</title>
+</head>
+<body>
+  <textarea id="document"></textarea>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    const documentTextarea = document.getElementById('document');
+
+    documentTextarea.addEventListener('input', () => {
+      const documentContent = documentTextarea.value;
+      socket.emit('update-document', documentContent);
+    });
+
+    socket.on('document-changed', (data) => {
+      documentTextarea.value = data;
+    });
+  </script>
+</body>
+</html>
